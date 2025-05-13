@@ -1,0 +1,128 @@
+
+1. Instalar ferramentas necessárias
+
+
+| Ferramenta                                            | Descrição                                      | Link                                                                                     |
+| ----------------------------------------------------- | ---------------------------------------------- | ---------------------------------------------------------------------------------------- |
+| **[VS Code](https://code.visualstudio.com/)**         | Editor de código                               | ✔️                                                                                       |
+| **[MinGW-w64](https://www.mingw-w64.org/downloads/)** | Compilador GCC para Windows                    | ✔️                                                                                       |
+| **[CMake (opcional)](https://cmake.org/download/)**   | Se quiser compilar `libxlsxio` você mesmo      | ✔️                                                                                       |
+| **Extensão do C/C++ da Microsoft**                    | Para suporte a IntelliSense e build no VS Code | [Extensão C/C++](https://marketplace.visualstudio.com/items?itemName=ms-vscode.cpptools) |
+
+
+
+2. Importante: Após instalar o MinGW, adicione o caminho do bin no PATH do sistema
+
+```makefile
+            C:\mingw-w64\bin
+```
+
+
+3. Estrutura do projeto
+
+/meu_projeto/
+├── main.c
+├── xlsxio/
+│   ├── include/       <- Headers (.h)
+│   ├── lib/           <- Bibliotecas (.a)
+│   └── bin/           <- DLLs necessárias
+├── dados.xlsx         <- Planilha de exemplo
+
+
+libxlsxio/
+├── include/
+│   ├── xlsxio_read.h
+│   └── xlsxio_common.h
+├── lib/
+│   ├── libxlsxio_read.a
+│   ├── libxlsxio_common.a
+│   ├── libexpat.a
+│   └── libz.a
+├── bin/
+│   ├── libxlsxio_read.dll
+│   ├── libexpat.dll
+│   └── zlib1.dll
+├── exemplo/
+│   ├── main.c
+│   └── tasks.json
+
+
+
+meu_projeto/
+├── src/            ← Código-fonte (.c)
+│   ├── main.c
+│   ├── util.c
+│   └── xml_writer.c
+├── include/        ← Headers (.h)
+│   ├── util.h
+│   └── xml_writer.h
+├── lib/            ← Bibliotecas estáticas/dinâmicas (.a / .so / .dll)
+├── bin/            ← Executáveis gerados
+├── build/          ← Arquivos temporários de build
+├── data/           ← Arquivos de entrada (ex: .xlsx)
+├── output/         ← Resultados (ex: .xml gerado)
+├── Makefile        ← Script de compilação (opcional)
+└── README.md       ← Documentação do projeto
+
+
+
+| Pasta       | Nome sugerido | Observação                      |
+| ----------- | ------------- | ------------------------------- |
+| Fonte       | `src/`        | Onde ficam os `.c`              |
+| Cabeçalhos  | `include/`    | Onde ficam os `.h`              |
+| Bibliotecas | `lib/`        | DLLs, `.a`, `.so`               |
+| Entrada     | `data/`       | Ex: arquivos `.xlsx`            |
+| Saída       | `output/`     | Ex: arquivos `.xml`             |
+| Binários    | `bin/`        | Compilados finais (executáveis) |
+| Compilação  | `build/`      | Objeto temporário, `.o`, etc.   |
+
+
+
+
+
+
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Compilar com libxlsxio",
+      "type": "shell",
+      "command": "gcc",
+      "args": [
+        "main.c",
+        "-o", "programa.exe",
+        "-I", "xlsxio/include",
+        "-L", "xlsxio/lib",
+        "-lxlsxio_read",
+        "-lxlsxio_common",
+        "-lexpat",
+        "-lz"
+      ],
+      "group": "build",
+      "problemMatcher": []
+    }
+  ]
+}
+
+
+
+// src/xml_writer.c
+#include "xml_writer.h"
+
+void escrever_xml(const char* caminho) {
+    // Código para escrever XML
+}
+
+
+
+// include/xml_writer.h
+#ifndef XML_WRITER_H
+#define XML_WRITER_H
+
+void escrever_xml(const char* caminho);
+
+#endif
+
+
+
+
