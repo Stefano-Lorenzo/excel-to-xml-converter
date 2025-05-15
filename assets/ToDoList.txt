@@ -1,0 +1,22 @@
+- criar o projecto e as pastas do projecto: concluído
+- instalar as ferramentas necessárias:
+
+    . VS Code: concluído
+    . Compilador GCC: concluído
+    . Extensão C/C++ para o VS Code: concluído
+    . Adicionar o path da pasta bin do compilador GCC no path do sistema: concluído
+
+- acções na pasta exemplo
+
+    . Crie uma nova pasta de projeto e copie o conteúdo da pasta exemplo para ela
+    . Abra o VS Code e abra a pasta do projeto
+    . Instale as extensões necessárias
+    . Configure o ambiente de compilação
+    . Certifique-se de que o compilador gcc (do MinGW) esteja instalado e adicionado ao PATH do sistema
+    . Criar e configurar o ficheiro tasks.json
+    . Verifique se as pastas include e lib da libxlsxio estão corretamente referenciadas no arquivo tasks.json
+    . Compile o projeto
+    . Pressione Ctrl+Shift+B para compilar o projeto usando a tarefa definida em tasks.json
+    . Após a compilação bem-sucedida, execute o programa gerado (programa.exe)
+    . Certifique-se de que os arquivos .dll necessários (libxlsxio_read.dll, libexpat.dll, zlib1.dll) estejam no mesmo diretório do executável ou em um diretório incluído no PATH do sistema
+    . Certifique-se de que o arquivo dados.xlsx esteja no mesmo diretório do executável ou ajuste o caminho no código conforme necessário

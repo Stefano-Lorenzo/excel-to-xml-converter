@@ -17,6 +17,7 @@
             C:\mingw-w64\bin
 ```
 
+https://sourceforge.net/projects/xlsxio/files/0.2.31/xlsxio-0.2.31-binary-win64.zip/download
 
 3. Estrutura do projeto
 
@@ -105,6 +106,17 @@ meu_projeto/
 }
 
 
+6. Rodar o programa
+Pressione Ctrl+Shift+B para compilar.
+
+Certifique-se de que libxlsxio_read.dll, libexpat.dll e zlib1.dll estejam:
+
+No mesmo diretório do programa.exe
+
+OU dentro do diretório do sistema (C:\Windows\System32 ou adicionado ao PATH)
+
+
+
 
 // src/xml_writer.c
 #include "xml_writer.h"
@@ -126,3 +138,1920 @@ void escrever_xml(const char* caminho);
 
 
 
+🛠️ Configurando no VS Code
+Crie uma nova pasta de projeto e copie o conteúdo da pasta exemplo para ela.
+
+Abra o VS Code e abra a pasta do projeto.
+
+Instale as extensões necessárias:
+
+Vá para a aba de extensões (Ctrl+Shift+X).
+
+Instale a extensão C/C++ da Microsoft.
+
+Configure o ambiente de compilação:
+
+Certifique-se de que o compilador gcc (do MinGW) esteja instalado e adicionado ao PATH do sistema.
+
+Verifique se as pastas include e lib da libxlsxio estão corretamente referenciadas no arquivo tasks.json.
+
+Compile o projeto:
+
+Pressione Ctrl+Shift+B para compilar o projeto usando a tarefa definida em tasks.json.
+
+Execute o programa:
+
+Após a compilação bem-sucedida, execute o programa gerado (programa.exe).
+
+Certifique-se de que os arquivos .dll necessários (libxlsxio_read.dll, libexpat.dll, zlib1.dll) estejam no mesmo diretório do executável ou em um diretório incluído no PATH do sistema.
+
+📝 Observações
+Certifique-se de que o arquivo dados.xlsx esteja no mesmo diretório do executável ou ajuste o caminho no código conforme necessário.
+
+Se encontrar erros de compilação relacionados a símbolos indefinidos, verifique se as bibliotecas estão corretamente linkadas e se os caminhos estão corretos.
+
+
+
+
+
+
+
+REPORTES CIRC
+
+PESSOAS
+
+CREATE PROCEDURE [dbo].[EmjitLoanPerform_CIRC3G] 
+
+	-- Add the parameters for the stored procedure here
+
+		@DataR date, @TipoREP varchar(50), @DataI date
+
+AS
+
+
+
+	-- SET NOCOUNT ON added to prevent extra result sets from
+
+	-- interfering with SELECT statements.
+
+	SET NOCOUNT ON;
+
+
+
+Declare @DataRep nvarchar(10), @DataIni nvarchar(10)
+
+
+SET @DataIni=@DataI
+SET @DataRep=@DataR
+
+
+
+IF @TipoREP='Pessoas'
+
+
+begin
+
+   delete from emjit.dbo.OSUSR_VOL_CIRC3GPESSOAS  where DATAINFORMACAO=@DataRep
+
+	---- Pessoas Particulares
+
+   Insert into emjit.dbo.OSUSR_VOL_CIRC3GPESSOAS  
+
+	  ([TIPOREP]
+
+      ,[USERCRIACAO]
+
+      ,[DATACRIACAO]
+
+      ,[HORACRIACAO]
+
+      ,[SITUACAO]
+
+      ,[REPORTADO]
+
+      ,[DATAINFORMACAO]
+
+      ,[MODO]
+
+      ,[NIF]
+
+      ,[NUMEROIDENTIFICACAOPESSOAL]
+
+      ,[TIPODOCUMENTO]
+
+      ,[DESCRICAODOCUMENTO]
+
+      ,[CODIGOUNICOCLIENTE]
+
+      ,[TIPOPESSOA]
+
+      ,[NOMEDENOMINACAO]
+
+      ,[DATANASCIMENTOCONSTITUICAO]
+
+      ,[GENERO]
+
+      ,[PROFISSAO]
+
+      ,[PAIS]
+
+      ,[NACIONALIDADE]
+
+      ,[CAE]
+
+      ,[SECTORINSTITUCIONAL]
+
+      ,[CLASSIFICACAOMPME]
+
+      ,[ACTIVOTOTAL]
+
+      ,[RECEITASLIQUIDAS]
+
+      ,[NIFEMPRESAMAE]
+
+      ,[GRUPOECONOMICO]
+
+      ,[PAISEMPRESAMAE]
+
+      ,[PEP]
+
+      ,[CLIENTEALTORISCO])
+
+ 
+
+  (select distinct 
+
+'Pessoas',
+
+2,
+
+getdate(),
+
+getdate(),
+
+'V',
+
+'N',
+
+@DataRep,
+
+'I',
+
+docnum,	
+
+docnum,	
+
+(case when docid='01' then 'BI' else case when docid='02' then 'OU' else case when docid='00' then 'BI' end end end),
+
+(case when docid='02' then 'Bilhete de Identidade' end),	
+
+(rtrim(t1.clcode)),	
+
+'F',
+
+upper(rtrim(clname)+' '+rtrim(middlename)+' '+rtrim(clsurname)),
+
+clbday,
+
+sex,
+
+occupation,
+
+'024',
+
+'024',
+
+'00001',	
+
+'',	
+
+'',	
+
+0,	
+
+0,	
+
+'',	
+
+'',	
+
+'',	
+
+'00',	
+
+'00'
+
+from [MCSVR01\SQLPRIV9].Data.dbo.Persons t1 left join [MCSVR01\SQLPRIV9].Data.dbo.clientdoc t3 on t1.clcode=t3.clientcode
+where  clcode<>'')
+
+
+
+---- Pessoas Empresas/Grupos
+
+ Insert into emjit.dbo.OSUSR_VOL_CIRC3GPESSOAS  
+
+	  ([TIPOREP]
+
+      ,[USERCRIACAO]
+
+      ,[DATACRIACAO]
+
+      ,[HORACRIACAO]
+
+      ,[SITUACAO]
+
+      ,[REPORTADO]
+
+      ,[DATAINFORMACAO]
+
+      ,[MODO]
+
+      ,[NIF]
+
+      ,[NUMEROIDENTIFICACAOPESSOAL]
+
+      ,[TIPODOCUMENTO]
+
+      ,[DESCRICAODOCUMENTO]
+
+      ,[CODIGOUNICOCLIENTE]
+
+      ,[TIPOPESSOA]
+
+      ,[NOMEDENOMINACAO]
+
+      ,[DATANASCIMENTOCONSTITUICAO]
+
+      ,[GENERO]
+
+      ,[PROFISSAO]
+
+      ,[PAIS]
+
+      ,[NACIONALIDADE]
+
+      ,[CAE]
+
+      ,[SECTORINSTITUCIONAL]
+
+      ,[CLASSIFICACAOMPME]
+
+      ,[ACTIVOTOTAL]
+
+      ,[RECEITASLIQUIDAS]
+
+      ,[NIFEMPRESAMAE]
+
+      ,[GRUPOECONOMICO]
+
+      ,[PAISEMPRESAMAE]
+
+      ,[PEP]
+
+      ,[CLIENTEALTORISCO])
+
+ 
+
+  (select distinct 
+
+'Pessoas',
+
+2,
+
+getdate(),
+
+getdate(),
+
+'V',
+
+'N',
+
+@DataRep,
+
+'I',
+
+docnum,	
+
+'',	
+
+'',
+
+'',	
+
+(case isnull((rtrim(t4.cluscode) +'/'+ rtrim(t1.memno)),'') when '' then rtrim(t4.cluscode) else case when t1.memno='' then rtrim(t4.cluscode) else (rtrim(t4.cluscode) +'/'+ rtrim(t1.memno)) end end),	
+
+'3',
+
+upper(rtrim(replace(name,'&','E'))),
+clbday,
+
+'',
+
+occupation,
+
+'024',
+
+'',
+
+'00001',	
+
+'51',	
+
+'MC',	
+
+0,	
+
+0,	
+
+'',	
+
+'',	
+
+'',	
+
+'',	
+
+'00'
+
+from [MCSVR01\SQLPRIV9].Data.dbo.Persons t1 left join [MCSVR01\SQLPRIV9].Data.dbo.clientdoc t3 on t1.MemId=t3.clientcode right join [MCSVR01\SQLPRIV9].Data.dbo.cluster t4 on t1.ClusCode=t4.cluscode
+
+
+
+
+----- Delete Duplicates of CodUnicoCliente
+
+DELETE T1 FROM emjit.dbo.OSUSR_VOL_CIRC3GPESSOAS T1
+INNER JOIN emjit.dbo.OSUSR_VOL_CIRC3GPESSOAS T2 ON T1.DATAINFORMACAO=T2.DATAINFORMACAO
+WHERE T1.ID > T2.ID AND T1.CODIGOUNICOCLIENTE = T2.CODIGOUNICOCLIENTE AND T1.DATAINFORMACAO=@DataRep
+
+----- Delete Duplicated of NIF
+
+DELETE T1 FROM emjit.dbo.OSUSR_VOL_CIRC3GPESSOAS T1
+INNER JOIN emjit.dbo.OSUSR_VOL_CIRC3GPESSOAS T2 ON T1.DATAINFORMACAO=T2.DATAINFORMACAO
+WHERE  T1.ID > T2.ID AND T1.NIF = T2.NIF AND T1.DATAINFORMACAO=@DataRep
+
+
+---------------------
+
+CONTRATOS
+
+--- Contratos Particulares
+
+INSERT INTO [emjit].[dbo].[OSUSR_VOL_CIRC3GCONTRATOS]
+
+      ([TIPOREP]
+
+      ,[USERCRIACAO]
+
+      ,[DATACRIACAO]
+
+      ,[HORACRIACAO]
+
+      ,[SITUACAO]
+
+      ,[REPORTADO]
+
+      ,[DATAINFORMACAO]
+
+      ,[MODO]
+
+      ,[NIF]
+
+      ,[NUMEROIDENTIFICACAOPESSOAL]
+
+      ,[TIPODOCUMENTO]
+
+      ,[DESCRICAODOCUMENTO]
+
+      ,[NIVELRESPONSABILIDADE]
+
+      ,[CODIGOUNICOCREDITO]
+
+      ,[NUMEROCONCESSAOCREDITO]
+
+      ,[INSTRUMENTOFINANCEIRO]
+
+      ,[MOEDA]
+
+      ,[DATACELEBRACAOCONTRATO]
+
+      ,[DATADESEMBOLSO]
+
+      ,[MONTANTECONTRATADO]
+
+      ,[CAPITALPOTENCIAL]
+
+      ,[CONDICIONALIDADELINHACREDITO]
+
+      ,[TAXAJUROORIGINAL]
+
+      ,[BASECALCULOJUROS]
+
+      ,[TAXAJUROEFECTIVA]
+
+      ,[TIPOAMORTIZACAO]
+
+      ,[FREQUENCIAPAGAMENTOCAPITAL]
+
+      ,[FREQUENCIAPAGAMENTOJUROS]
+
+      ,[DATAPAGAMENTOCAPITAL]
+
+      ,[DATAPAGAMENTOJUROS]
+
+      ,[CODIGOCREDITOREESTRUTURADO]
+
+      ,[CODIGOORIGINALCREDITO]
+
+      ,[TIPOALTERACAOCONTRATUAL]
+
+      ,[DATAORIGINALMATURIDADE]
+
+      ,[PARTERELACIONADA]
+
+      ,[BEMELIGIVEL]
+
+      ,[DESCRICAOPROJECTO]
+
+      ,[PROVINCIAPROJECTO]
+
+      ,[MUNICIPIOPROJECTO]
+
+      ,[MACROSECTORPROJECTO]
+
+      ,[TIPOTAXASJUROS]
+
+      ,[CUSTOTOTAL]
+
+      ,[DATAEMISSAOPARECER]
+
+      ,[NUMTRABALHADORESEXPATRIADOS]
+
+      ,[NUMTRABALHADORESNACIONAIS]
+
+      ,[FINALIDADECREDITO]
+
+      ,[PROVINCIACONCESSAOCREDITO]
+
+      ,[MUNICIPIOCONCESSAOCREDITO]
+
+      ,[BALCAOCONCESSAOCREDITO]
+
+      ,[SUBVENCAOPROTOCOLO]
+
+      ,[SPREAD]
+
+      ,[TAEG]
+
+      ,[TAE]
+
+      ,[DATARENEGOCIACAO]
+
+      ,[TIPORENEGOCIACAO]
+
+      ,[CODIGOUNICOCREDITOREESTRUTUR]
+
+      ,[SITUACAODATAREESTRUTURACAO]
+
+      ,[SEGUNDAREESTRUTURACAO]
+
+      ,[LIQUIDACAOMONTANTESVENCIDOS]
+
+      ,[REFORCOGARANTIAS]
+
+      ,[CONTAGEMREESTRUTURACOES])
+
+      
+
+     (select distinct
+
+'Contratos',
+
+2,
+
+getdate(),
+
+getdate(),
+
+'V',
+
+'N',
+
+@DataRep,
+
+'I',
+
+(select top 1 docnum from [MCSVR01\SQLPRIV9].Data.dbo.clientdoc t2 where t2.clientcode=t1.clcode order by Rowid) as NIF,	
+
+(select top 1 docnum from [MCSVR01\SQLPRIV9].Data.dbo.clientdoc t2 where t2.clientcode=t1.clcode order by Rowid) as OU,	
+
+(case when docid='01' then 'BI' else case when docid='02' then 'OU' else case when docid='00' then 'BI' end end end),
+
+(case when docid='02' then 'Bilhete de Identidade' end),	
+
+'01',	
+
+lnr,
+
+'',
+
+'733'	,
+
+'973'	,
+
+tstart	,
+
+exp	,
+
+lamount	,
+
+lamount	,
+
+'N'	,
+
+tint	,
+
+'01'	,
+
+tint	,
+
+'01'	,
+
+'30'	,
+
+'30'	,
+
+exp	,
+
+exp	,
+
+''	,
+
+''	,
+
+''	,
+
+exp	,
+
+'00'	,
+
+''	,
+
+''	,
+
+''	,
+
+''	,
+
+''	,
+
+'F'	,
+
+'0'	,
+
+'00:00.0'	,
+
+'0'	,
+
+'0'	,
+
+'9000'	,
+
+'05000000'	,
+
+'05010000'	,
+
+'SEDE'	,
+
+'01'	,
+
+0	,
+
+0	,
+
+0	,
+
+'00:00.0'	,
+
+''	,
+
+''	,
+
+''	,
+
+''	,
+
+''	,
+
+''	,
+
+0	
+
+from [MCSVR01\SQLPRIV9].Data.dbo.Loan t1 left join [MCSVR01\SQLPRIV9].Data.dbo.clientdoc t2 on t1.clcode=t2.clientcode 
+where clcode<>'' and lstatus  in ('OT', 'WO', 'AR', 'LD', 'AE') and tstart<=@DataRep)
+
+
+--- Contratos Particulares Expirados no Periodo
+
+
+INSERT INTO [emjit].[dbo].[OSUSR_VOL_CIRC3GCONTRATOS]
+
+      ([TIPOREP]
+
+      ,[USERCRIACAO]
+
+      ,[DATACRIACAO]
+
+      ,[HORACRIACAO]
+
+      ,[SITUACAO]
+
+      ,[REPORTADO]
+
+      ,[DATAINFORMACAO]
+
+      ,[MODO]
+
+      ,[NIF]
+
+      ,[NUMEROIDENTIFICACAOPESSOAL]
+
+      ,[TIPODOCUMENTO]
+
+      ,[DESCRICAODOCUMENTO]
+
+      ,[NIVELRESPONSABILIDADE]
+
+      ,[CODIGOUNICOCREDITO]
+
+      ,[NUMEROCONCESSAOCREDITO]
+
+      ,[INSTRUMENTOFINANCEIRO]
+
+      ,[MOEDA]
+
+      ,[DATACELEBRACAOCONTRATO]
+
+      ,[DATADESEMBOLSO]
+
+      ,[MONTANTECONTRATADO]
+
+      ,[CAPITALPOTENCIAL]
+
+      ,[CONDICIONALIDADELINHACREDITO]
+
+      ,[TAXAJUROORIGINAL]
+
+      ,[BASECALCULOJUROS]
+
+      ,[TAXAJUROEFECTIVA]
+
+      ,[TIPOAMORTIZACAO]
+
+      ,[FREQUENCIAPAGAMENTOCAPITAL]
+
+      ,[FREQUENCIAPAGAMENTOJUROS]
+
+      ,[DATAPAGAMENTOCAPITAL]
+
+      ,[DATAPAGAMENTOJUROS]
+
+      ,[CODIGOCREDITOREESTRUTURADO]
+
+      ,[CODIGOORIGINALCREDITO]
+
+      ,[TIPOALTERACAOCONTRATUAL]
+
+      ,[DATAORIGINALMATURIDADE]
+
+      ,[PARTERELACIONADA]
+
+      ,[BEMELIGIVEL]
+
+      ,[DESCRICAOPROJECTO]
+
+      ,[PROVINCIAPROJECTO]
+
+      ,[MUNICIPIOPROJECTO]
+
+      ,[MACROSECTORPROJECTO]
+
+      ,[TIPOTAXASJUROS]
+
+      ,[CUSTOTOTAL]
+
+      ,[DATAEMISSAOPARECER]
+
+      ,[NUMTRABALHADORESEXPATRIADOS]
+
+      ,[NUMTRABALHADORESNACIONAIS]
+
+      ,[FINALIDADECREDITO]
+
+      ,[PROVINCIACONCESSAOCREDITO]
+
+      ,[MUNICIPIOCONCESSAOCREDITO]
+
+      ,[BALCAOCONCESSAOCREDITO]
+
+      ,[SUBVENCAOPROTOCOLO]
+
+      ,[SPREAD]
+
+      ,[TAEG]
+
+      ,[TAE]
+
+      ,[DATARENEGOCIACAO]
+
+      ,[TIPORENEGOCIACAO]
+
+      ,[CODIGOUNICOCREDITOREESTRUTUR]
+
+      ,[SITUACAODATAREESTRUTURACAO]
+
+      ,[SEGUNDAREESTRUTURACAO]
+
+      ,[LIQUIDACAOMONTANTESVENCIDOS]
+
+      ,[REFORCOGARANTIAS]
+
+      ,[CONTAGEMREESTRUTURACOES])
+
+      
+
+    (select distinct
+
+'Contratos',
+
+2,
+
+getdate(),
+
+getdate(),
+
+'V',
+
+'N',
+
+@DataRep,
+
+'I',
+
+(select top 1 docnum from [MCSVR01\SQLPRIV9].Data.dbo.clientdoc t2 where t2.clientcode=t1.clcode order by Rowid) as NIF,	
+
+(select top 1 docnum from [MCSVR01\SQLPRIV9].Data.dbo.clientdoc t2 where t2.clientcode=t1.clcode order by Rowid) as OU,	
+
+(case when docid='01' then 'BI' else case when docid='02' then 'OU' else case when docid='00' then 'BI' end end end),
+
+(case when docid='02' then 'Bilhete de Identidade' end),	
+
+'01',	
+
+lnr,
+
+'',
+
+'733'	,
+
+'973'	,
+
+tstart	,
+
+exp	,
+
+lamount	,
+
+lamount	,
+
+'N'	,
+
+tint	,
+
+'01'	,
+
+tint	,
+
+'01'	,
+
+'30'	,
+
+'30'	,
+
+exp	,
+
+exp	,
+
+''	,
+
+''	,
+
+''	,
+
+exp	,
+
+'00'	,
+
+''	,
+
+''	,
+
+''	,
+
+''	,
+
+''	,
+
+'F'	,
+
+'0'	,
+
+'00:00.0'	,
+
+'0'	,
+
+'0'	,
+
+'9000'	,
+
+'05000000'	,
+
+'05010000'	,
+
+'SEDE'	,
+
+'01'	,
+
+0	,
+
+0	,
+
+0	,
+
+'00:00.0'	,
+
+''	,
+
+''	,
+
+''	,
+
+''	,
+
+''	,
+
+''	,
+
+0	
+
+from [MCSVR01\SQLPRIV9].Data.dbo.Loan t1 left join [MCSVR01\SQLPRIV9].Data.dbo.clientdoc t2 on t1.clcode=t2.clientcode 
+where clcode<>'' and lstatus='LR' and tstart<=@DataRep and exp between @DataIni and @DataRep)
+
+
+--- Contratos Empresas
+
+INSERT INTO [emjit].[dbo].[OSUSR_VOL_CIRC3GCONTRATOS]
+
+      ([TIPOREP]
+
+      ,[USERCRIACAO]
+
+      ,[DATACRIACAO]
+
+      ,[HORACRIACAO]
+
+      ,[SITUACAO]
+
+      ,[REPORTADO]
+
+      ,[DATAINFORMACAO]
+
+      ,[MODO]
+
+      ,[NIF]
+
+      ,[NUMEROIDENTIFICACAOPESSOAL]
+
+      ,[TIPODOCUMENTO]
+
+      ,[DESCRICAODOCUMENTO]
+
+      ,[NIVELRESPONSABILIDADE]
+
+      ,[CODIGOUNICOCREDITO]
+
+      ,[NUMEROCONCESSAOCREDITO]
+
+      ,[INSTRUMENTOFINANCEIRO]
+
+      ,[MOEDA]
+
+      ,[DATACELEBRACAOCONTRATO]
+
+      ,[DATADESEMBOLSO]
+
+      ,[MONTANTECONTRATADO]
+
+      ,[CAPITALPOTENCIAL]
+
+      ,[CONDICIONALIDADELINHACREDITO]
+
+      ,[TAXAJUROORIGINAL]
+
+      ,[BASECALCULOJUROS]
+
+      ,[TAXAJUROEFECTIVA]
+
+      ,[TIPOAMORTIZACAO]
+
+      ,[FREQUENCIAPAGAMENTOCAPITAL]
+
+      ,[FREQUENCIAPAGAMENTOJUROS]
+
+      ,[DATAPAGAMENTOCAPITAL]
+
+      ,[DATAPAGAMENTOJUROS]
+
+      ,[CODIGOCREDITOREESTRUTURADO]
+
+      ,[CODIGOORIGINALCREDITO]
+
+      ,[TIPOALTERACAOCONTRATUAL]
+
+      ,[DATAORIGINALMATURIDADE]
+
+      ,[PARTERELACIONADA]
+
+      ,[BEMELIGIVEL]
+
+      ,[DESCRICAOPROJECTO]
+
+      ,[PROVINCIAPROJECTO]
+
+      ,[MUNICIPIOPROJECTO]
+
+      ,[MACROSECTORPROJECTO]
+
+      ,[TIPOTAXASJUROS]
+
+      ,[CUSTOTOTAL]
+
+      ,[DATAEMISSAOPARECER]
+
+      ,[NUMTRABALHADORESEXPATRIADOS]
+
+      ,[NUMTRABALHADORESNACIONAIS]
+
+      ,[FINALIDADECREDITO]
+
+      ,[PROVINCIACONCESSAOCREDITO]
+
+      ,[MUNICIPIOCONCESSAOCREDITO]
+
+      ,[BALCAOCONCESSAOCREDITO]
+
+      ,[SUBVENCAOPROTOCOLO]
+
+      ,[SPREAD]
+
+      ,[TAEG]
+
+      ,[TAE]
+
+      ,[DATARENEGOCIACAO]
+
+      ,[TIPORENEGOCIACAO]
+
+      ,[CODIGOUNICOCREDITOREESTRUTUR]
+
+      ,[SITUACAODATAREESTRUTURACAO]
+
+      ,[SEGUNDAREESTRUTURACAO]
+
+      ,[LIQUIDACAOMONTANTESVENCIDOS]
+
+      ,[REFORCOGARANTIAS]
+
+      ,[CONTAGEMREESTRUTURACOES])
+
+      
+
+      (select distinct
+
+'Contratos',
+
+2,
+
+getdate(),
+
+getdate(),
+
+'V',
+
+'N',
+
+@DataRep,
+
+'I',
+
+(select top 1 docnum from [MCSVR01\SQLPRIV9].Data.dbo.clientdoc t2 left join [MCSVR01\SQLPRIV9].Data.dbo.Persons t3 on t2.clientcode=t3.MemId  where t3.cluscode=t1.cluscode order by Rowid) as NIF,	
+
+(select top 1 docnum from [MCSVR01\SQLPRIV9].Data.dbo.clientdoc t2 left join [MCSVR01\SQLPRIV9].Data.dbo.Persons t3 on t2.clientcode=t3.MemId  where t3.cluscode=t1.cluscode order by Rowid) as OU,	
+
+(case when (select top 1 docid from [MCSVR01\SQLPRIV9].Data.dbo.clientdoc t2 left join [MCSVR01\SQLPRIV9].Data.dbo.Persons t3 on t2.clientcode=t3.MemId  where t3.cluscode=t1.cluscode order by Rowid)='01' then 'BI' else case when (select top 1 docid from [MCSVR01\SQLPRIV9].Data.dbo.clientdoc t2 left join [MCSVR01\SQLPRIV9].Data.dbo.Persons t3 on t2.clientcode=t3.MemId  where t3.cluscode=t1.cluscode order by Rowid)='02' then 'OU' else case when (select top 1 docid from [MCSVR01\SQLPRIV9].Data.dbo.clientdoc t2 left join [MCSVR01\SQLPRIV9].Data.dbo.Persons t3 on t2.clientcode=t3.MemId  where t3.cluscode=t1.cluscode order by Rowid)='00' then 'BI' end end end),
+
+(case when (select top 1 docid from [MCSVR01\SQLPRIV9].Data.dbo.clientdoc t2 left join [MCSVR01\SQLPRIV9].Data.dbo.Persons t3 on t2.clientcode=t3.MemId  where t3.cluscode=t1.cluscode order by Rowid)='02' then 'Bilhete de Identidade' end),	
+
+'01',	
+
+lnr,
+
+'',
+
+'733'	,
+
+'973'	,
+
+tstart	,
+
+exp	,
+
+lamount	,
+
+lamount	,
+
+'N'	,
+
+tint	,
+
+'01'	,
+
+tint	,
+
+'01'	,
+
+'30'	,
+
+'30'	,
+
+exp	,
+
+exp	,
+
+''	,
+
+''	,
+
+''	,
+
+exp	,
+
+'00'	,
+
+''	,
+
+''	,
+
+''	,
+
+''	,
+
+''	,
+
+'F'	,
+
+'0'	,
+
+'00:00.0'	,
+
+'0'	,
+
+'0'	,
+
+'9000'	,
+
+'05000000'	,
+
+'05010000'	,
+
+'SEDE'	,
+
+'01'	,
+
+0	,
+
+0	,
+
+0	,
+
+'00:00.0'	,
+
+''	,
+
+''	,
+
+''	,
+
+''	,
+
+''	,
+
+''	,
+
+0	
+
+
+from [MCSVR01\SQLPRIV9].Data.dbo.Loan t1 
+where lstatus  in ('OT', 'WO', 'AR', 'LD', 'AE') and cluscode<>'' and tstart<=@DataRep)
+
+--- Contratos Empresas Expirados no periodo
+
+INSERT INTO [emjit].[dbo].[OSUSR_VOL_CIRC3GCONTRATOS]
+
+      ([TIPOREP]
+
+      ,[USERCRIACAO]
+
+      ,[DATACRIACAO]
+
+      ,[HORACRIACAO]
+
+      ,[SITUACAO]
+
+      ,[REPORTADO]
+
+      ,[DATAINFORMACAO]
+
+      ,[MODO]
+
+      ,[NIF]
+
+      ,[NUMEROIDENTIFICACAOPESSOAL]
+
+      ,[TIPODOCUMENTO]
+
+      ,[DESCRICAODOCUMENTO]
+
+      ,[NIVELRESPONSABILIDADE]
+
+      ,[CODIGOUNICOCREDITO]
+
+      ,[NUMEROCONCESSAOCREDITO]
+
+      ,[INSTRUMENTOFINANCEIRO]
+
+      ,[MOEDA]
+
+      ,[DATACELEBRACAOCONTRATO]
+
+      ,[DATADESEMBOLSO]
+
+      ,[MONTANTECONTRATADO]
+
+      ,[CAPITALPOTENCIAL]
+
+      ,[CONDICIONALIDADELINHACREDITO]
+
+      ,[TAXAJUROORIGINAL]
+
+      ,[BASECALCULOJUROS]
+
+      ,[TAXAJUROEFECTIVA]
+
+      ,[TIPOAMORTIZACAO]
+
+      ,[FREQUENCIAPAGAMENTOCAPITAL]
+
+      ,[FREQUENCIAPAGAMENTOJUROS]
+
+      ,[DATAPAGAMENTOCAPITAL]
+
+      ,[DATAPAGAMENTOJUROS]
+
+      ,[CODIGOCREDITOREESTRUTURADO]
+
+      ,[CODIGOORIGINALCREDITO]
+
+      ,[TIPOALTERACAOCONTRATUAL]
+
+      ,[DATAORIGINALMATURIDADE]
+
+      ,[PARTERELACIONADA]
+
+      ,[BEMELIGIVEL]
+
+      ,[DESCRICAOPROJECTO]
+
+      ,[PROVINCIAPROJECTO]
+
+      ,[MUNICIPIOPROJECTO]
+
+      ,[MACROSECTORPROJECTO]
+
+      ,[TIPOTAXASJUROS]
+
+      ,[CUSTOTOTAL]
+
+      ,[DATAEMISSAOPARECER]
+
+      ,[NUMTRABALHADORESEXPATRIADOS]
+
+      ,[NUMTRABALHADORESNACIONAIS]
+
+      ,[FINALIDADECREDITO]
+
+      ,[PROVINCIACONCESSAOCREDITO]
+
+      ,[MUNICIPIOCONCESSAOCREDITO]
+
+      ,[BALCAOCONCESSAOCREDITO]
+
+      ,[SUBVENCAOPROTOCOLO]
+
+      ,[SPREAD]
+
+      ,[TAEG]
+
+      ,[TAE]
+
+      ,[DATARENEGOCIACAO]
+
+      ,[TIPORENEGOCIACAO]
+
+      ,[CODIGOUNICOCREDITOREESTRUTUR]
+
+      ,[SITUACAODATAREESTRUTURACAO]
+
+      ,[SEGUNDAREESTRUTURACAO]
+
+      ,[LIQUIDACAOMONTANTESVENCIDOS]
+
+      ,[REFORCOGARANTIAS]
+
+      ,[CONTAGEMREESTRUTURACOES])
+
+      
+
+      (select distinct
+
+'Contratos',
+
+2,
+
+getdate(),
+
+getdate(),
+
+'V',
+
+'N',
+
+@DataRep,
+
+'I',
+
+(select top 1 docnum from [MCSVR01\SQLPRIV9].Data.dbo.clientdoc t2 left join [MCSVR01\SQLPRIV9].Data.dbo.Persons t3 on t2.clientcode=t3.MemId  where t3.cluscode=t1.cluscode order by Rowid) as NIF,	
+
+(select top 1 docnum from [MCSVR01\SQLPRIV9].Data.dbo.clientdoc t2 left join [MCSVR01\SQLPRIV9].Data.dbo.Persons t3 on t2.clientcode=t3.MemId  where t3.cluscode=t1.cluscode order by Rowid) as OU,	
+
+(case when (select top 1 docid from [MCSVR01\SQLPRIV9].Data.dbo.clientdoc t2 left join [MCSVR01\SQLPRIV9].Data.dbo.Persons t3 on t2.clientcode=t3.MemId  where t3.cluscode=t1.cluscode order by Rowid)='01' then 'BI' else case when (select top 1 docid from [MCSVR01\SQLPRIV9].Data.dbo.clientdoc t2 left join [MCSVR01\SQLPRIV9].Data.dbo.Persons t3 on t2.clientcode=t3.MemId  where t3.cluscode=t1.cluscode order by Rowid)='02' then 'OU' else case when (select top 1 docid from [MCSVR01\SQLPRIV9].Data.dbo.clientdoc t2 left join [MCSVR01\SQLPRIV9].Data.dbo.Persons t3 on t2.clientcode=t3.MemId  where t3.cluscode=t1.cluscode order by Rowid)='00' then 'BI' end end end),
+
+(case when (select top 1 docid from [MCSVR01\SQLPRIV9].Data.dbo.clientdoc t2 left join [MCSVR01\SQLPRIV9].Data.dbo.Persons t3 on t2.clientcode=t3.MemId  where t3.cluscode=t1.cluscode order by Rowid)='02' then 'Bilhete de Identidade' end),	
+
+'01',	
+
+lnr,
+
+'',
+
+'733'	,
+
+'973'	,
+
+tstart	,
+
+exp	,
+
+lamount	,
+
+lamount	,
+
+'N'	,
+
+tint	,
+
+'01'	,
+
+tint	,
+
+'01'	,
+
+'30'	,
+
+'30'	,
+
+exp	,
+
+exp	,
+
+''	,
+
+''	,
+
+''	,
+
+exp	,
+
+'00'	,
+
+''	,
+
+''	,
+
+''	,
+
+''	,
+
+''	,
+
+'F'	,
+
+'0'	,
+
+'00:00.0'	,
+
+'0'	,
+
+'0'	,
+
+'9000'	,
+
+'05000000'	,
+
+'05010000'	,
+
+'SEDE'	,
+
+'01'	,
+
+0	,
+
+0	,
+
+0	,
+
+'00:00.0'	,
+
+''	,
+
+''	,
+
+''	,
+
+''	,
+
+''	,
+
+''	,
+
+0	
+
+
+from [MCSVR01\SQLPRIV9].Data.dbo.Loan t1 
+where lstatus='LR' and cluscode<>'' and tstart<=@DataRep and exp between @DataIni and @DataRep)
+
+----- Delete Duplicates of CodUnicoCredito
+
+DELETE T1 FROM emjit.dbo.OSUSR_VOL_CIRC3GCONTRATOS T1
+INNER JOIN emjit.dbo.OSUSR_VOL_CIRC3GCONTRATOS T2 ON T1.DATAINFORMACAO=T2.DATAINFORMACAO
+WHERE T1.ID > T2.ID AND T1.CODIGOUNICOCREDITO = T2.CODIGOUNICOCREDITO AND T1.DATAINFORMACAO=@DataRep
+
+
+
+
+END
+
+
+
+IF @TipoREP='Operacoes'
+
+BEGIN
+
+
+delete from emjit.dbo.OSUSR_VOL_CIRC3GOPERACOES where DATAINFORMACAO=@DataRep
+
+
+-- OPERACOES NO PERIODO--
+
+ Insert into emjit.dbo.OSUSR_VOL_CIRC3GOPERACOES 
+
+(TIPOREP	,
+USERCRIACAO	,
+DATACRIACAO	,
+HORACRIACAO	,
+SITUACAO	,
+REPORTADO	,
+DATAINFORMACAO	,
+CODIGOUNICOCREDITO	,
+DATAINICIOOPERACAO	,
+DATAFIMOPERACAO	,
+NIVELRISCO	,
+CAPITALEFECTIVOREGULAR	,
+JUROSEFECTIVOREGULAR	,
+CAPITALVENCIDO	,
+JUROVENCIDO	,
+JUROMORA	,
+CAPITALABATIDOACTIVO	,
+JUROABATIDOACTIVO	,
+CAPITALPERDOADO	,
+JUROPERDOADO	,
+DIASATRASO	,
+TAXAJUROACTUAL	,
+TAXAAMORTIZACAOCAPITAL	,
+VALORRESIDUAL	,
+TEMPOREMANCARENCIACAPITAL	,
+TEMPOREMANCARENCIAJUROS	,
+AUMENTOCAPITAL	,
+PRESTAOCAOMENSAL	,
+PLANOREEMBOLSO	,
+MONTANTEDESEMBOLSADO	,
+DATAENTRADAVENCIDO	,
+CAPITALVENCIDOLITIGIO	,
+JUROVENCIDOLITIGIO	,
+CAPITALABATIDOLITIGIO	,
+JUROABATIDOLITIGIO	,
+CAPITALLIQUIDADO	,
+JUROLIQUIDADO	,
+INDEXACAO	,
+COTACAO	)
+
+(select
+'Operacoes',
+2,
+GETDATE(),
+GETDATE(),
+(case when lstatus in ('LR', 'AE') then 'X' else 'V' end),
+'N',
+@DataRep,
+t1.lnr,
+tstart,
+
+(case when ((select top 1 dday from [MCSVR01\SQLPRIV9].Data.dbo.memdues t2 where dday <=@DataRep and t2.lnr=t1.lnr order by dday desc) IS null) then exp else (select top 1 dday from [MCSVR01\SQLPRIV9].Data.dbo.memdues t2 where dday <=@DataRep and t2.lnr=t1.lnr order by dday desc) end),
+
+'0',
+
+(case when lstatus in ('OT', 'LD') then (lamount)-((select coalesce(SUM(mprinc),0) from [MCSVR01\SQLPRIV9].Data.dbo.memdues t2 where dday <=@DataRep and t2.lnr=t1.lnr) - (select coalesce(SUM(mprinc),0) from [MCSVR01\SQLPRIV9].Data.dbo.memrepay t2 where pday <=@DataRep and t2.lnr=t1.lnr))
+ else 0 end),
+
+(case when lstatus in ('OT', 'LD') then (intamount)-((select coalesce(SUM(mint),0) from [MCSVR01\SQLPRIV9].Data.dbo.memdues t2 where dday <=@DataRep and t2.lnr=t1.lnr )- (select coalesce(SUM(mint),0) from [MCSVR01\SQLPRIV9].Data.dbo.memrepay t2 where pday <=@DataRep and t2.lnr=t1.lnr ))
+ else 0 end),
+
+(case when lstatus in ('AE', 'AR') then ((select coalesce(SUM(mprinc),0) from [MCSVR01\SQLPRIV9].Data.dbo.memdues t2 where dday <=@DataRep and t2.lnr=t1.lnr )-(select coalesce(SUM(mprinc),0) from [MCSVR01\SQLPRIV9].Data.dbo.memrepay t2 where pday <=@DataRep and t2.lnr=t1.lnr ))
+ else 0 end),
+
+(case when lstatus in ('AE', 'AR') then ((select coalesce(SUM(mint),0) from [MCSVR01\SQLPRIV9].Data.dbo.memdues t2 where dday <=@DataRep and t2.lnr=t1.lnr )-(select coalesce(SUM(mint),0) from [MCSVR01\SQLPRIV9].Data.dbo.memrepay t2 where pday <=@DataRep and t2.lnr=t1.lnr ))
+ else 0 end),
+ 
+0,
+(case when lstatus ='WO' then ((select coalesce(SUM(mprinc),0) from [MCSVR01\SQLPRIV9].Data.dbo.memdues t2 where dday <=@DataRep and t2.lnr=t1.lnr )-(select coalesce(SUM(mprinc),0) from [MCSVR01\SQLPRIV9].Data.dbo.memrepay t2 where pday <=@DataRep and t2.lnr=t1.lnr ))
+ else 0 end),
+
+(case when lstatus ='WO' then ((select coalesce(SUM(mint),0) from [MCSVR01\SQLPRIV9].Data.dbo.memdues t2 where dday <=@DataRep and t2.lnr=t1.lnr )-(select coalesce(SUM(mint),0) from [MCSVR01\SQLPRIV9].Data.dbo.memrepay t2 where pday <=@DataRep and t2.lnr=t1.lnr ))
+ else 0 end),
+
+0,
+0,
+(case when lstatus in ('AE', 'AR', 'WO') then datediff(DAY,(select top 1 dday from [MCSVR01\SQLPRIV9].Data.dbo.memdues t2 where dday<=@DataRep and t2.lnr=t1.lnr order by dday desc )
+,@DataRep) else 0 end),
+tint,
+0,
+--Valor residual
+((select coalesce(SUM(mprinc),0) from [MCSVR01\SQLPRIV9].Data.dbo.memdues t2 where dday <=@DataRep and t2.lnr=t1.lnr )-(select coalesce(SUM(mprinc),0) from [MCSVR01\SQLPRIV9].Data.dbo.memrepay t2 where pday <=@DataRep and t2.lnr=t1.lnr ))+
+((select coalesce(SUM(mint),0) from [MCSVR01\SQLPRIV9].Data.dbo.memdues t2 where dday <=@DataRep and t2.lnr=t1.lnr )-(select coalesce(SUM(mint),0) from [MCSVR01\SQLPRIV9].Data.dbo.memrepay t2 where pday <=@DataRep and t2.lnr=t1.lnr )),
+
+0,
+0,
+0,
+((lamount + intamount)/(nrin)),
+--((select top 1 coalesce(mprinc,0) from [MCSVR01\SQLPRIV9].Data.dbo.memdues t2 where dday <=@DataRep and t2.lnr=t1.lnr order by dday desc )
+--+(select top 1 coalesce(mint,0) from [MCSVR01\SQLPRIV9].Data.dbo.memdues t2 where dday <=@DataRep and t2.lnr=t1.lnr order by dday desc )),
+'C',
+(select coalesce(SUM(ldamount),0) from [MCSVR01\SQLPRIV9].Data.dbo.ldisb t2 where ldday <=@DataRep and t2.lnr=t1.lnr ),
+
+(case when lstatus in ('AE', 'AR', 'WO') then (select top 1 dday from [MCSVR01\SQLPRIV9].Data.dbo.memdues t2 where dday <=@DataRep and t2.lnr=t1.lnr order by dday desc ) else null end),
+0,
+0,
+0,
+0,
+(select coalesce(SUM(mprinc),0) from [MCSVR01\SQLPRIV9].Data.dbo.memrepay t2 where pday <=@DataRep and t2.lnr=t1.lnr ),
+(select coalesce(SUM(mint),0) from [MCSVR01\SQLPRIV9].Data.dbo.memrepay t2 where pday <=@DataRep and t2.lnr=t1.lnr ),
+'90000',
+0	
+from [MCSVR01\SQLPRIV9].Data.dbo.Loan t1 
+where lstatus  in ('OT', 'WO', 'AR', 'LD', 'AE', 'LR') and tstart<=@DataRep)
+
+
+
+----- Delete OPERACOES COM CONTRATOS EXPIRADOS NO PERIODO--
+
+DELETE T1 FROM emjit.dbo.OSUSR_VOL_CIRC3GOPERACOES T1
+WHERE T1.DATAINFORMACAO=@DataRep AND T1.SITUACAO='X' AND T1.VALORRESIDUAL<=0
+
+
+
+----- Update Niveis de Riscos
+
+DECLARE @CounterX INT , @MaxIdX INT, @NRisco nvarchar(1),  @DiasAtraso int
+
+SELECT @CounterX = min(Id) , @MaxIdX = max(Id) FROM emjit.dbo.OSUSR_VOL_CIRC3GOPERACOES where DATAINFORMACAO=@DataRep
+ 
+WHILE(@CounterX IS NOT NULL
+      AND @CounterX <= @MaxIdX)
+BEGIN
+   SELECT @DiasAtraso = DIASATRASO FROM emjit.dbo.OSUSR_VOL_CIRC3GOPERACOES where Id = @CounterX
+    
+   if (@DiasAtraso < 7) -- NIVEL A
+   begin
+   set @NRisco='0'
+   end 
+
+   if (@DiasAtraso > 7 and @DiasAtraso <=15) -- NIVEL B
+   begin
+   set @NRisco='1'
+   end
+
+  if (@DiasAtraso > 15 and @DiasAtraso <=30) -- NIVEL C
+  begin
+  set @NRisco='2'
+  end
+  
+  if (@DiasAtraso > 30 and @DiasAtraso <=45) -- NIVEL D
+  begin
+  set @NRisco='3'
+  end
+  
+  if (@DiasAtraso > 45 and @DiasAtraso <=75) -- NIVEL E
+  begin
+  set @NRisco='4'
+  end
+  
+  if (@DiasAtraso > 75 and @DiasAtraso <=90) -- NIVEL F
+  begin
+  set @NRisco='5'
+  end
+  
+  if (@DiasAtraso > 90 and @DiasAtraso <=99999) -- NIVEL G
+  begin
+  set @NRisco='6'
+  end
+
+Update emjit.dbo.OSUSR_VOL_CIRC3GOPERACOES set NIVELRISCO=@NRisco where Id = @CounterX
+
+
+   SET @CounterX  = @CounterX  + 1    
+   
+END
+
+
+
+----- Delete Duplicates of CodUnicoCredito
+
+DELETE T1 FROM emjit.dbo.OSUSR_VOL_CIRC3GOPERACOES T1
+INNER JOIN emjit.dbo.OSUSR_VOL_CIRC3GOPERACOES T2 ON T1.DATAINFORMACAO=T2.DATAINFORMACAO
+WHERE T1.ID > T2.ID AND T1.CODIGOUNICOCREDITO = T2.CODIGOUNICOCREDITO AND T1.DATAINFORMACAO=@DataRep
+
+
+END
+
+
+
+
+if @TipoRep='TaxasJuroDIM' or @TipoRep='TaxasJuroMIM'
+
+
+BEGIN
+
+
+DECLARE @Counter INT , @MaxId INT, @ContaOrigem varchar(50), @TaxaMinima float, @TaxaMedia float, @TaxaMaxima Float
+
+SELECT @Counter = min(Id) , @MaxId = max(Id) FROM emjit.dbo.OSUSR_VOL_EMJITPRDCB where TipoRep=@TipoREP and DataInicio=@DataI and DataFim=@DataR
+ 
+WHILE(@Counter IS NOT NULL
+      AND @Counter <= @MaxId)
+BEGIN
+   SELECT @ContaOrigem = ContaOrigem FROM emjit.dbo.OSUSR_VOL_EMJITPRDCB where Id = @Counter
+    
+   if (@ContaOrigem <> '')
+   begin
+ SELECT 
+@TaxaMinima= min(T2.tint),
+@TaxaMaxima= max(T2.tint),
+@TaxaMedia= (sum(T2.tint) / count(T2.tint))
+FROM .[Data].[dbo].[GENLEDG] T1 left join .[Data].[dbo].[loan] T2 on T1.lnr=T2.lnr  where Account=@ContaOrigem  and tint<>0
+
+Update emjit.dbo.OSUSR_VOL_EMJITPRDCB set Taxaminima=@TaxaMinima, TaxaMedia=@TaxaMedia, TaxaMaxima=@TaxaMaxima where Id = @Counter
+
+   end
+   
+   SET @Counter  = @Counter  + 1    
+END
+
+
+
+
+
+END 
+
+IF @TipoREP='Garantias'
+
+BEGIN
+
+
+delete from emjit.dbo.OSUSR_VOL_CIRC3GGARANTIAS where DATAINFORMACAO=@DataRep
+
+
+-- GARANTIAS NO PERIODO--
+
+ Insert into emjit.dbo.OSUSR_VOL_CIRC3GGARANTIAS
+      ([TIPOREP]
+      ,[USERCRIACAO]
+      ,[DATACRIACAO]
+      ,[HORACRIACAO]
+      ,[SITUACAO]
+      ,[REPORTADO]
+      ,[DATAINFORMACAO]
+      ,[MODO]
+      ,[NIF]
+      ,[NUMEROIDENTIFICACAOPESSOAL]
+      ,[TIPODOCUMENTO]
+      ,[DESCRICAODOCUMENTO]
+      ,[CODIGOIDENTIFICACAOGARANTIA]
+      ,[GARANTIAEMITIDAFG]
+      ,[CODIGOUNICOCREDITO]
+      ,[MOEDA]
+      ,[VALORINICIALGARANTIA]
+      ,[DATAAVALIACAOINICIALGARANTIA]
+      ,[TIPOAVALIACAOGARANTIA]
+      ,[PERITOAVALIADOR]
+      ,[VALORULTIMAAVALIACAO]
+      ,[DATAULTIMAAVALIACAO]
+      ,[TIPOGARANTIA]
+      ,[VALORHIPOTECA]
+      ,[VALORALOCADOCONTRATO]
+      ,[PAISGARANTIA]
+      ,[PROVINCIAGARANTIA]
+      ,[MUNICIPIOGARANTIA]
+      ,[FIADOR]
+      ,[INDICADOREXECUCAOGARANTIA]
+      ,[MONTANTEEXECUCAOGARANTIA]
+      ,[DATAVENDA]
+      ,[MONTANTELIQUIDOVENDA]
+      ,[CUSTORECUPERACAO]
+      ,[CUSTOVENDA]
+      ,[CODIGOCONTRAPARTEGARANTIA]
+      ,[NIFCONTRAPARTEGARANTIA]
+      ,[HAIRCUTATRIBUIDO]
+      ,[TEMPOESTIMADORECUPERACAO]
+      ,[TEMPOESTIMADOVENDA]
+      ,[DATAMATURIDADEGARANTIA]
+      ,[NUMEROHIPOTECA]
+      ,[VALORCOLATERALIMOVEL]
+      ,[VALORGARANTIATERCEIROS]
+      ,[VALORCOLATERALFINANCEIRO])
+
+(select distinct
+
+'Garantias',
+
+2,
+
+getdate(),
+
+getdate(),
+
+'V',
+
+'N',
+
+@DataRep,
+
+'I',
+
+(select top 1 docnum from [MCSVR01\SQLPRIV9].Data.dbo.clientdoc t2 left join [MCSVR01\SQLPRIV9].Data.dbo.Persons t3 on t2.clientcode=t3.MemId  where t3.cluscode=t1.cluscode order by Rowid) as NIF,	
+
+(select top 1 docnum from [MCSVR01\SQLPRIV9].Data.dbo.clientdoc t2 left join [MCSVR01\SQLPRIV9].Data.dbo.Persons t3 on t2.clientcode=t3.MemId  where t3.cluscode=t1.cluscode order by Rowid) as OU,	
+
+(case when (select top 1 docid from [MCSVR01\SQLPRIV9].Data.dbo.clientdoc t2 left join [MCSVR01\SQLPRIV9].Data.dbo.Persons t3 on t2.clientcode=t3.MemId  where t3.cluscode=t1.cluscode order by Rowid)='01' then 'BI' else case when (select top 1 docid from [MCSVR01\SQLPRIV9].Data.dbo.clientdoc t2 left join [MCSVR01\SQLPRIV9].Data.dbo.Persons t3 on t2.clientcode=t3.MemId  where t3.cluscode=t1.cluscode order by Rowid)='02' then 'OU' else case when (select top 1 docid from [MCSVR01\SQLPRIV9].Data.dbo.clientdoc t2 left join [MCSVR01\SQLPRIV9].Data.dbo.Persons t3 on t2.clientcode=t3.MemId  where t3.cluscode=t1.cluscode order by Rowid)='00' then 'BI' end end end),
+
+(case when (select top 1 docid from [MCSVR01\SQLPRIV9].Data.dbo.clientdoc t2 left join [MCSVR01\SQLPRIV9].Data.dbo.Persons t3 on t2.clientcode=t3.MemId  where t3.cluscode=t1.cluscode order by Rowid)='02' then 'Bilhete de Identidade' end),	
+
+lnr,	
+'N',
+
+lnr	,
+
+'973'	,
+
+0	,
+
+''	,
+
+''	,
+
+''	,
+
+0	,
+
+''	,
+
+'00'	,
+
+0	,
+
+0	,
+
+'024'	,
+
+'05000000'	,
+
+'05010000'	,
+
+''	,
+
+''	,
+
+0	,
+
+''	,
+
+0	,
+
+0	,
+
+0	,
+
+''	,
+
+''	,
+
+0	,
+
+0	,
+
+0	,
+
+''	,
+
+''	,
+
+0	,
+
+0,
+
+0
+	
+from [MCSVR01\SQLPRIV9].Data.dbo.Loan t1 
+where lstatus  in ('OT', 'WO', 'AR', 'LD', 'AE') and tstart<=@DataRep)
+
+-- GARANTIAS COM CONTRATOS EXPIRADOS NO PERIODO--
+
+ Insert into emjit.dbo.OSUSR_VOL_CIRC3GGARANTIAS
+      ([TIPOREP]
+      ,[USERCRIACAO]
+      ,[DATACRIACAO]
+      ,[HORACRIACAO]
+      ,[SITUACAO]
+      ,[REPORTADO]
+      ,[DATAINFORMACAO]
+      ,[MODO]
+      ,[NIF]
+      ,[NUMEROIDENTIFICACAOPESSOAL]
+      ,[TIPODOCUMENTO]
+      ,[DESCRICAODOCUMENTO]
+      ,[CODIGOIDENTIFICACAOGARANTIA]
+      ,[GARANTIAEMITIDAFG]
+      ,[CODIGOUNICOCREDITO]
+      ,[MOEDA]
+      ,[VALORINICIALGARANTIA]
+      ,[DATAAVALIACAOINICIALGARANTIA]
+      ,[TIPOAVALIACAOGARANTIA]
+      ,[PERITOAVALIADOR]
+      ,[VALORULTIMAAVALIACAO]
+      ,[DATAULTIMAAVALIACAO]
+      ,[TIPOGARANTIA]
+      ,[VALORHIPOTECA]
+      ,[VALORALOCADOCONTRATO]
+      ,[PAISGARANTIA]
+      ,[PROVINCIAGARANTIA]
+      ,[MUNICIPIOGARANTIA]
+      ,[FIADOR]
+      ,[INDICADOREXECUCAOGARANTIA]
+      ,[MONTANTEEXECUCAOGARANTIA]
+      ,[DATAVENDA]
+      ,[MONTANTELIQUIDOVENDA]
+      ,[CUSTORECUPERACAO]
+      ,[CUSTOVENDA]
+      ,[CODIGOCONTRAPARTEGARANTIA]
+      ,[NIFCONTRAPARTEGARANTIA]
+      ,[HAIRCUTATRIBUIDO]
+      ,[TEMPOESTIMADORECUPERACAO]
+      ,[TEMPOESTIMADOVENDA]
+      ,[DATAMATURIDADEGARANTIA]
+      ,[NUMEROHIPOTECA]
+      ,[VALORCOLATERALIMOVEL]
+      ,[VALORGARANTIATERCEIROS]
+      ,[VALORCOLATERALFINANCEIRO])
+
+(select distinct
+
+'Garantias',
+
+2,
+
+getdate(),
+
+getdate(),
+
+'V',
+
+'N',
+
+@DataRep,
+
+'I',
+
+(select top 1 docnum from [MCSVR01\SQLPRIV9].Data.dbo.clientdoc t2 left join [MCSVR01\SQLPRIV9].Data.dbo.Persons t3 on t2.clientcode=t3.MemId  where t3.cluscode=t1.cluscode order by Rowid) as NIF,	
+
+(select top 1 docnum from [MCSVR01\SQLPRIV9].Data.dbo.clientdoc t2 left join [MCSVR01\SQLPRIV9].Data.dbo.Persons t3 on t2.clientcode=t3.MemId  where t3.cluscode=t1.cluscode order by Rowid) as OU,	
+
+(case when (select top 1 docid from [MCSVR01\SQLPRIV9].Data.dbo.clientdoc t2 left join [MCSVR01\SQLPRIV9].Data.dbo.Persons t3 on t2.clientcode=t3.MemId  where t3.cluscode=t1.cluscode order by Rowid)='01' then 'BI' else case when (select top 1 docid from [MCSVR01\SQLPRIV9].Data.dbo.clientdoc t2 left join [MCSVR01\SQLPRIV9].Data.dbo.Persons t3 on t2.clientcode=t3.MemId  where t3.cluscode=t1.cluscode order by Rowid)='02' then 'OU' else case when (select top 1 docid from [MCSVR01\SQLPRIV9].Data.dbo.clientdoc t2 left join [MCSVR01\SQLPRIV9].Data.dbo.Persons t3 on t2.clientcode=t3.MemId  where t3.cluscode=t1.cluscode order by Rowid)='00' then 'BI' end end end),
+
+(case when (select top 1 docid from [MCSVR01\SQLPRIV9].Data.dbo.clientdoc t2 left join [MCSVR01\SQLPRIV9].Data.dbo.Persons t3 on t2.clientcode=t3.MemId  where t3.cluscode=t1.cluscode order by Rowid)='02' then 'Bilhete de Identidade' end),	
+
+lnr,	
+'N',
+
+lnr	,
+
+'973'	,
+
+0	,
+
+''	,
+
+''	,
+
+''	,
+
+0	,
+
+''	,
+
+'00'	,
+
+0	,
+
+0	,
+
+'024'	,
+
+''	,
+
+''	,
+
+''	,
+
+''	,
+
+0	,
+
+''	,
+
+0	,
+
+0	,
+
+0	,
+
+''	,
+
+''	,
+
+0	,
+
+0	,
+
+0	,
+
+''	,
+
+''	,
+
+0	,
+
+0,
+
+0
+	
+from [MCSVR01\SQLPRIV9].Data.dbo.Loan t1 
+where lstatus='LR' and tstart<=@DataRep and exp between @DataIni and @DataRep)
